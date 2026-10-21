@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surat Spesial Untuk Jagoan!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Kalam:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        /* Latar belakang interaktif & animasi gradasi */
+        body {
+            background: linear-gradient(-45deg, #e0f2fe, #bae6fd, #7dd3fc, #fdf4ff);
+            background-size: 400% 400%;
+            animation: gradientBG 10s ease infinite;
+            color: #0284c7;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Partikel gelembung melayang */
+        .bubble {
+            position: absolute;
+            bottom: -50px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            animation: floatUp linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(1); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-120vh) scale(1.5); opacity: 0; }
+        }
+
+        /* Container utama */
+        .container {
+            width: 90%;
+            max-width: 450px;
+            height: 85vh;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(2, 132, 199, 0.25);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            border: 4px solid #7dd3fc;
+            z-index: 10;
+        }
+
+        .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transform: scale(0.8) translateY(30px);
+        }
+
+        .screen.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1) translateY(0);
+        }
+
+        h1 {
+            font-size: 26px;
+            font-weight: 900;
+            margin-bottom: 15px;
+            color: #0369a1;
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #334155;
+        }
+
+        /* Foto Utama */
+        .photo-frame {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 6px solid #38bdf8;
+            margin: 0 auto 20px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        }
+
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Input & Tombol */
+        input[type="number"] {
+            padding: 12px;
+            font-size: 20px;
+            width: 120px;
+            text-align: center;
+            border: 3px solid #bae6fd;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            outline: none;
+            color: #0284c7;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        input[type="number"]:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #38bdf8, #0284c7);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.08) translateY(-3px);
+            box-shadow: 0 8px 20px rgba(2, 132, 199, 0.4);
+        }
+
+        .error-msg {
+            color: #ef4444;
+            font-size: 14px;
+            margin-top: -10px;
+            margin-bottom: 15px;
+            display: none;
+            animation: shake 0.4s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* ALBUM KENANGAN (Polaroid Grid) */
+        .album-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            width: 100%;
+            max-height: 60vh;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        /* Sembunyikan scrollbar di album */
+        .album-container::-webkit-scrollbar { display: none; }
+
+        .polaroid {
+            background: white;
+            padding: 8px 8px 15px 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            border-radius: 4px;
+            transition: transform 0.3s, z-index 0.3s;
+            position: relative;
+        }
+
+        /* Variasi rotasi agar terlihat natural seperti buku memori */
+        .polaroid:nth-child(odd) { transform: rotate(-4deg); }
+        .polaroid:nth-child(even) { transform: rotate(4deg); }
+        .polaroid:nth-child(3) { transform: rotate(2deg); }
+        .polaroid:nth-child(4) { transform: rotate(-2deg); }
+
+        .polaroid:hover {
+            transform: scale(1.15) rotate(0deg);
+            z-index: 20;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .polaroid img {
+            width: 100%;
+            height: 90px;
+            object-fit: cover;
+            background: #e2e8f0;
+        }
+
+        .polaroid p {
+            font-family: 'Kalam', cursive;
+            font-size: 14px;
+            margin: 8px 0 0 0;
+            color: #333;
+            line-height: 1.2;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Wadah Partikel Gelembung -->
+    <div id="particles"></div>
+
+    <!-- AUDIO (Ganti src dengan nama file mp3 kamu yang satu folder, misal: "lagu.mp3") -->
+    <audio id="bg-music" src="kekal.mp3" loop></audio>
+
+    <div class="container">
+        
+        <!-- TEKA TEKI -->
+        <div id="screen-puzzle" class="screen active">
+            <h1>Halo Jagoan! 😎</h1>
+            <p>Buktikan dulu kalau kamu beneran pintar !</p>
+            <div style="background: rgba(240, 249, 255, 0.8); padding: 15px; border-radius: 12px; margin-bottom: 20px;">
+                <p style="font-weight: bold; margin-bottom: 10px; font-size: 18px; color: #0369a1;">Ada 6 keranjang, setiap keranjang isinya 7 buah apel. Berapa jumlah semua apel?</p>
+                <input type="number" id="answer" placeholder="?">
+                <p id="error-msg" class="error-msg">Yah salah, coba hitung lagi deh! 😜</p>
+            </div>
+            <button class="btn" onclick="checkAnswer()">Jawab & Buka Surat</button>
+        </div>
+
+        <!-- SLIDE 1 -->
+        <div id="screen-1" class="screen">
+            <h1>Jawabanmu Benar! 🎉</h1>
+            <p>Wah, ternyata adik kakak yang satu ini emang pintar. <br><br>Sekarang tarik napas pelan-pelan, pastikan volume HP menyala, dan tekan tombol di bawah ya.</p>
+            <button class="btn" onclick="nextSlide(2)">Mulai ➔</button>
+        </div>
+
+        <!-- SLIDE 2 -->
+        <div id="screen-2" class="screen">
+            <div class="photo-frame">
+                <!-- GANTI FOTO DI SINI -->
+                <img src="EL.jpeg" alt="Foto Adik">
+            </div>
+            <h1>Hai, Azka Asadel...</h1>
+            <p>Nggak kerasa waktu cepat banget berlalunya. Perasaan baru kemarin kamu masih kecil, cengeng, dan masih belajar jalan.</p>
+            <button class="btn" onclick="nextSlide(3)">Lanjut ➔</button>
+        </div>
+
+        <!-- SLIDE 3 -->
+        <div id="screen-3" class="screen">
+            <h1>Sekarang Udah Besar</h1>
+            <p>Kamu udah makin tinggi, makin tangguh, dan punya duniamu sendiri. Walau kadang kita berantem soal hal sepele, asal kamu tahu...</p>
+            <p style="font-weight: bold; color: #0284c7; font-size: 18px;">Kakak selalu bangga punya adik kayak kamu. </p>
+            <button class="btn" onclick="nextSlide(4)">Lanjut ➔</button>
+        </div>
+
+        <!-- SLIDE 4 -->
+        <div id="screen-4" class="screen">
+            <h1>Pesan Dari Kakak 💙</h1>
+            <p>Terus kejar impianmu. Jadilah laki-laki yang berani, tapi selalu punya hati yang lembut dan baik. Nurut sama orang tua, kakak juga, jangan nakal. Jangan kebawa anak - anak yang ga bener.</p>
+            <p>Kalau dunia lagi jahat sama kamu, ingat kalau kakak akan selalu ada di belakangmu untuk jadi pendukung utamamu.</p>
+            <button class="btn" onclick="nextSlide(5)">Lanjut ➔</button>
+        </div>
+
+        <!-- SLIDE 5 -->
+        <div id="screen-5" class="screen">
+            <h1 style="font-size: 50px; margin-bottom: 0;">👨‍👦</h1>
+            <h1>Semangat Terus!</h1>
+            <p>Tetap jadi jagoan yang kece ya! Salam sayang dari kakakmu yang cantik satu semesta galaksi bimasakti.</p>
+            <p style="font-size: 13px; color: #94a3b8; font-style: italic;">Oh iya, kakak punya satu kejutan terakhir...</p>
+            <button class="btn" onclick="nextSlide(6)">Buka Kejutan 🎁</button>
+        </div>
+
+        <!-- SLIDE 6: ALBUM KENANGAN (KEJUTAN) -->
+        <div id="screen-6" class="screen">
+            <h1 style="margin-bottom: 10px;">Album Kenangan 📸</h1>
+            <p style="font-size: 14px; margin-bottom: 15px;">Momen-momen yang nggak akan pernah kakak lupakan.</p>
+            
+            <div class="album-container">
+                <!-- Foto Polaroid 1 -->
+                <div class="polaroid">
+                    <img src="kia & el 1.jpeg" alt="Kenangan 1">
+                    <p>Waktu kita masih kecil</p>
+                </div>
+                <!-- Foto Polaroid 2 -->
+                <div class="polaroid">
+                    <img src="EL 2.jpeg" alt="Kenangan 2">
+                    <p>Muka dedek nangis!</p>
+                </div>
+                <!-- Foto Polaroid 3 -->
+                <div class="polaroid">
+                    <img src="EL 3.jpeg" alt="Kenangan 3">
+                    <p>Jalan-jalan bareng</p>
+                </div>
+                <!-- Foto Polaroid 4 -->
+                <div class="polaroid">
+                    <img src="keluarga.jpeg" alt="Kenangan 4">
+                    <p>We are family! 💙</p>
+                </div>
+            </div>
+            
+            <button class="btn" style="margin-top: 15px; font-size: 14px; padding: 8px 20px;" onclick="location.reload()">Ulangi dari Awal</button>
+        </div>
+
+    </div>
+
+    <script>
+        // --- 1. MEMBUAT EFEK GELEMBUNG BACKGROUND INTERAKTIF ---
+        const particleContainer = document.getElementById('particles');
+        
+        function createBubble() {
+            const bubble = document.createElement('div');
+            bubble.classList.add('bubble');
+            
+            // Random ukuran, posisi, dan durasi melayang
+            const size = Math.random() * 40 + 10; 
+            bubble.style.width = size + 'px';
+            bubble.style.height = size + 'px';
+            bubble.style.left = Math.random() * 100 + 'vw';
+            bubble.style.animationDuration = (Math.random() * 5 + 4) + 's';
+            
+            particleContainer.appendChild(bubble);
+
+            // Hapus gelembung setelah animasi selesai biar web tidak berat
+            setTimeout(() => {
+                bubble.remove();
+            }, 9000);
+        }
+        
+        // Munculkan gelembung setiap 400ms
+        setInterval(createBubble, 400);
+
+        // --- 2. LOGIKA TEKA TEKI & PINDAH SLIDE ---
+        const correctAnswer = 42;
+
+        function checkAnswer() {
+            const userAnswer = document.getElementById('answer').value;
+            const errorMsg = document.getElementById('error-msg');
+            const bgMusic = document.getElementById('bg-music');
+
+            if (parseInt(userAnswer) === correctAnswer) {
+                errorMsg.style.display = 'none';
+                
+                // Putar musik (dibungkus try-catch agar tidak error jika dicegat browser)
+                bgMusic.volume = 0.6; // Atur volume sedikit lembut
+                let playPromise = bgMusic.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => {
+                        console.log("Auto-play terblokir, tapi slide tetap jalan.");
+                    });
+                }
+                
+                changeScreen('screen-puzzle', 'screen-1');
+            } else {
+                errorMsg.style.display = 'block';
+                document.getElementById('answer').value = '';
+                
+                // Efek getar saat salah
+                const inputBox = document.getElementById('answer');
+                inputBox.style.animation = 'none';
+                inputBox.offsetHeight; /* trigger reflow */
+                inputBox.style.animation = 'shake 0.4s';
+            }
+        }
+
+        function nextSlide(slideNumber) {
+            const currentSlide = 'screen-' + (slideNumber - 1);
+            const nextSlide = 'screen-' + slideNumber;
+            changeScreen(currentSlide, nextSlide);
+        }
+
+        function changeScreen(hideId, showId) {
+            document.getElementById(hideId).classList.remove('active');
+            setTimeout(() => {
+                document.getElementById(showId).classList.add('active');
+            }, 400); // Waktu yang pas dengan transisi CSS
+        }
+    </script>
+</body>
+</html>
