@@ -230,8 +230,8 @@
     <!-- Wadah Partikel Gelembung -->
     <div id="particles"></div>
 
-    <!-- AUDIO (Ganti src dengan nama file mp3 kamu yang satu folder, misal: "lagu.mp3") -->
-    <audio id="bg-music" src="kekal.mp3" loop></audio/Adzkia27/Azka//>
+    <!-- AUDIO yang sudah diperbaiki -->
+    <audio id="bg-music" src="kekal.mp3" loop></audio>
 
     <div class="container">
         
@@ -257,8 +257,8 @@
         <!-- SLIDE 2 -->
         <div id="screen-2" class="screen">
             <div class="photo-frame">
-                <!-- GANTI FOTO DI SINI -->
-                <img src="EL.jpeg" alt="Foto Adik"/Adzkia27/Azka//>
+                <!-- FOTO yang sudah diperbaiki -->
+                <img src="EL.jpeg" alt="Foto Adik">
             </div>
             <h1>Hai, Azka Asadel...</h1>
             <p>Nggak kerasa waktu cepat banget berlalunya. Perasaan baru kemarin kamu masih kecil, cengeng, dan masih belajar jalan.</p>
@@ -296,24 +296,21 @@
             <p style="font-size: 14px; margin-bottom: 15px;">Momen-momen yang nggak akan pernah kakak lupakan.</p>
             
             <div class="album-container">
-                <!-- Foto Polaroid 1 -->
+                <!-- FOTO Polaroid yang sudah diperbaiki -->
                 <div class="polaroid">
-                    <img src="kia & el 1.jpeg" alt="Kenangan 1"/Adzkia27/Azka//>
+                    <img src="kia & el 1.jpeg" alt="Kenangan 1">
                     <p>Waktu kita masih kecil</p>
                 </div>
-                <!-- Foto Polaroid 2 -->
                 <div class="polaroid">
-                    <img src="EL 2.jpeg" alt="Kenangan 2"/Adzkia27/Azka//>
+                    <img src="EL 2.jpeg" alt="Kenangan 2">
                     <p>Muka dedek nangis!</p>
                 </div>
-                <!-- Foto Polaroid 3 -->
                 <div class="polaroid">
-                    <img src="EL 3.jpeg" alt="Kenangan 3"/Adzkia27/Azka//>
+                    <img src="EL 3.jpeg" alt="Kenangan 3">
                     <p>Jalan-jalan bareng</p>
                 </div>
-                <!-- Foto Polaroid 4 -->
                 <div class="polaroid">
-                    <img src="keluarga.jpeg" alt="Kenangan 4"/Adzkia27/Azka//>
+                    <img src="keluarga.jpeg" alt="Kenangan 4">
                     <p>We are family! 💙</p>
                 </div>
             </div>
@@ -324,14 +321,12 @@
     </div>
 
     <script>
-        // --- 1. MEMBUAT EFEK GELEMBUNG BACKGROUND INTERAKTIF ---
         const particleContainer = document.getElementById('particles');
         
         function createBubble() {
             const bubble = document.createElement('div');
             bubble.classList.add('bubble');
             
-            // Random ukuran, posisi, dan durasi melayang
             const size = Math.random() * 40 + 10; 
             bubble.style.width = size + 'px';
             bubble.style.height = size + 'px';
@@ -340,16 +335,13 @@
             
             particleContainer.appendChild(bubble);
 
-            // Hapus gelembung setelah animasi selesai biar web tidak berat
             setTimeout(() => {
                 bubble.remove();
             }, 9000);
         }
         
-        // Munculkan gelembung setiap 400ms
         setInterval(createBubble, 400);
 
-        // --- 2. LOGIKA TEKA TEKI & PINDAH SLIDE ---
         const correctAnswer = 42;
 
         function checkAnswer() {
@@ -360,8 +352,7 @@
             if (parseInt(userAnswer) === correctAnswer) {
                 errorMsg.style.display = 'none';
                 
-                // Putar musik (dibungkus try-catch agar tidak error jika dicegat browser)
-                bgMusic.volume = 0.6; // Atur volume sedikit lembut
+                bgMusic.volume = 0.6; 
                 let playPromise = bgMusic.play();
                 if (playPromise !== undefined) {
                     playPromise.catch(error => {
@@ -374,10 +365,9 @@
                 errorMsg.style.display = 'block';
                 document.getElementById('answer').value = '';
                 
-                // Efek getar saat salah
                 const inputBox = document.getElementById('answer');
                 inputBox.style.animation = 'none';
-                inputBox.offsetHeight; /* trigger reflow */
+                inputBox.offsetHeight; 
                 inputBox.style.animation = 'shake 0.4s';
             }
         }
@@ -392,7 +382,7 @@
             document.getElementById(hideId).classList.remove('active');
             setTimeout(() => {
                 document.getElementById(showId).classList.add('active');
-            }, 400); // Waktu yang pas dengan transisi CSS
+            }, 400); 
         }
     </script>
 </body>
